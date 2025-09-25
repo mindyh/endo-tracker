@@ -6,7 +6,7 @@ export const useItemManager = (initialItems, itemType) => {
   const [newInput, setNewInput] = useState('');
   const [editingItem, setEditingItem] = useState(null);
   const [editInput, setEditInput] = useState('');
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   const addItem = () => {
     if (newInput.trim() && !items.find(item => item.key === createKeyFromLabel(newInput))) {

@@ -239,6 +239,48 @@ body {
   margin-bottom: 0.5rem;
 }
 
+/* Fatigue slider */
+.fatigue-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #10b981 0%, #f59e0b 50%, #7c3aed 100%);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.fatigue-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #7c3aed;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.fatigue-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #7c3aed;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.fatigue-description {
+  font-size: 0.85rem;
+  color: #7c3aed;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
 /* Pain location buttons */
 .pain-locations {
   display: grid;
@@ -373,6 +415,21 @@ body {
   border-radius: 8px;
   font-weight: 600;
   font-size: 0.75rem;
+}
+
+.fatigue-badge {
+  background: #ede9fe;
+  color: #7c3aed;
+  padding: 0.125rem 0.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.event-fatigue {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
 }
 
 .event-locations {
@@ -515,6 +572,7 @@ body {
   gap: 0.75rem;
   align-items: stretch;
   margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
 }
 
 .add-item .form-input {
@@ -692,6 +750,236 @@ body {
   .quick-buttons {
     grid-template-columns: repeat(5, 1fr);
   }
+}
+
+/* Event Type Manager */
+.event-type-manager {
+  padding: 1.5rem;
+}
+
+.manager-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.manager-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.reset-btn {
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-btn:hover {
+  background: #4b5563;
+}
+
+.manager-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.active-events-section h5,
+.hidden-events-section h5 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.active-events-list,
+.hidden-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.active-event-item,
+.hidden-event-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  gap: 0.75rem;
+}
+
+.active-event-item {
+  cursor: move;
+}
+
+.active-event-item:hover,
+.hidden-event-item:hover {
+  border-color: #16a34a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.active-event-item:active {
+  opacity: 0.8;
+  transform: scale(1.02);
+}
+
+.drag-handle {
+  color: #9ca3af;
+  font-weight: bold;
+  cursor: move;
+  user-select: none;
+  font-size: 1.2rem;
+  line-height: 1;
+  min-width: 20px;
+  text-align: center;
+}
+
+.drag-handle:hover {
+  color: #6b7280;
+}
+
+.available-event-item {
+  justify-content: space-between;
+}
+
+/* Drop zones */
+.drop-zone {
+  transition: all 0.2s ease;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: -1rem;
+  margin-bottom: 1rem;
+}
+
+.drop-zone.drag-over {
+  background: #f0fdf4;
+  border: 2px dashed #10b981;
+}
+
+.hidden-events-section.drop-zone.drag-over {
+  background: #fff7ed;
+  border: 2px dashed #f59e0b;
+}
+
+/* Drag and drop visual feedback */
+.active-event-item[draggable="true"]:hover,
+.hidden-event-item[draggable="true"]:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.1);
+}
+
+.active-event-item.dragging,
+.hidden-event-item.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+}
+
+.active-event-item.drag-over {
+  border-color: #10b981;
+  background: #f0fdf4;
+  transform: translateY(-2px);
+}
+
+.hidden-event-item {
+  cursor: move;
+}
+
+.event-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.event-emoji {
+  font-size: 1.25rem;
+}
+
+.event-label {
+  font-weight: 500;
+  color: #374151;
+}
+
+.event-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.move-btn {
+  background: #f3f4f6;
+  color: #6b7280;
+  border: none;
+  border-radius: 6px;
+  padding: 0.375rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  min-width: 28px;
+}
+
+.move-btn:hover:not(:disabled) {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.move-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.remove-btn {
+  background: #fef2f2;
+  color: #dc2626;
+  border: none;
+  border-radius: 6px;
+  padding: 0.375rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.remove-btn:hover {
+  background: #fecaca;
+}
+
+.add-btn {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: none;
+  border-radius: 6px;
+  padding: 0.375rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.add-btn:hover {
+  background: #dcfce7;
+}
+
+.no-hidden-events {
+  color: #6b7280;
+  font-style: italic;
+  text-align: center;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  margin: 0;
 }
 
 /* Touch improvements */

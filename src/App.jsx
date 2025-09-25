@@ -3,6 +3,7 @@ import './App.css';
 import { useState } from 'react';
 import { useItemManager } from './hooks/useItemManager';
 import { useFormState } from './hooks/useFormState';
+import { useEventTypeConfig } from './hooks/useEventTypeConfig';
 import { TabNavigation } from './components/TabNavigation';
 import { EventForm } from './components/EventForm';
 import { SettingsPanel } from './components/SettingsPanel';
@@ -21,6 +22,7 @@ function App() {
   const painLocationManager = useItemManager(painLocations, 'painLocations');
   const allergenManager = useItemManager(commonAllergens, 'allergens');
   const supplementManager = useItemManager(commonSupplements, 'supplements');
+  const { activeEventTypes, setActiveEventTypes } = useEventTypeConfig(eventTypes);
 
   // Event handlers
   const handleSubmit = (e) => {
@@ -56,6 +58,7 @@ function App() {
             form={form}
             handleChange={handleChange}
             toggleArrayItem={toggleArrayItem}
+            eventTypes={activeEventTypes}
             painLocations={painLocationManager.items}
             allergens={allergenManager.items}
             supplements={supplementManager.items}
@@ -71,6 +74,9 @@ function App() {
             defaultAllergens={commonAllergens}
             defaultPainLocations={painLocations}
             defaultSupplements={commonSupplements}
+            allEventTypes={eventTypes}
+            activeEventTypes={activeEventTypes}
+            setActiveEventTypes={setActiveEventTypes}
           />
         )}
 

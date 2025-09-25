@@ -1,10 +1,11 @@
 export const eventTypes = [
-  { key: 'food', label: '🍎 Food', emoji: '🍎' },
-  { key: 'water', label: '💧 Water', emoji: '💧' },
-  { key: 'supplements', label: '💊 Supplements', emoji: '💊' },
-  { key: 'pain', label: '⚡ Pain Start', emoji: '⚡' },
-  { key: 'pain-ending', label: '🕊️ Pain End', emoji: '🕊️' },
-  { key: 'treatment', label: '🩹 Treatment', emoji: '🩹' },
+  { key: 'pain-start', label: 'Pain Start', emoji: '⚡' },
+  { key: 'pain-ending', label: 'Pain End', emoji: '🕊️' },
+  { key: 'fatigue', label: 'Fatigue', emoji: '😴' },
+  { key: 'treatment', label: 'Treatment', emoji: '🩹' },
+  { key: 'food', label: 'Food', emoji: '🍎' },
+  { key: 'water', label: 'Water', emoji: '💧' },
+  { key: 'supplements', label: 'Supplements', emoji: '💊' },
 ];
 
 export const painLocations = [

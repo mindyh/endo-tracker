@@ -1,9 +1,10 @@
-import { eventTypes, painLevels } from '../data/constants';
+import { painLevels } from '../data/constants';
 
 export const EventForm = ({ 
   form, 
   handleChange, 
   toggleArrayItem, 
+  eventTypes,
   painLocations, 
   allergens, 
   supplements,
@@ -23,7 +24,7 @@ export const EventForm = ({
               onClick={() => handleChange({ target: { name: 'type', value: et.key } })}
             >
               <span className="emoji">{et.emoji}</span>
-              <span>{et.label.split(' ')[1]}</span>
+              <span>{et.label}</span>
             </button>
           ))}
         </div>
@@ -47,7 +48,7 @@ export const EventForm = ({
         </div>
       )}
       
-      {form.type === 'pain' && (
+      {form.type === 'pain-start' && (
         <>
           <div className="form-group">
             <label>Pain Level: {form.painLevel ? `${form.painLevel}/10` : '0/10'}</label>

@@ -1,4 +1,5 @@
 import { ItemManager } from './ItemManager';
+import { EventTypeManager } from './EventTypeManager';
 
 export const SettingsPanel = ({ 
   allergenManager, 
@@ -6,7 +7,10 @@ export const SettingsPanel = ({
   supplementManager,
   defaultAllergens, 
   defaultPainLocations,
-  defaultSupplements
+  defaultSupplements,
+  allEventTypes,
+  activeEventTypes,
+  setActiveEventTypes
 }) => (
   <div className="form-card">
     <h3>Configuration Settings</h3>
@@ -30,6 +34,12 @@ export const SettingsPanel = ({
         manager={supplementManager}
         defaultItems={defaultSupplements}
         placeholder="Add new supplement..."
+      />
+      
+      <EventTypeManager
+        allEventTypes={allEventTypes}
+        activeEventTypes={activeEventTypes}
+        setActiveEventTypes={setActiveEventTypes}
       />
     </div>
   </div>
