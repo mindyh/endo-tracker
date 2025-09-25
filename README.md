@@ -68,3 +68,58 @@ This section has moved here: [https://vitejs.dev/guide/build.html](https://vitej
 ### Troubleshooting
 
 This section has moved here: [https://vitejs.dev/guide/troubleshooting.html](https://vitejs.dev/guide/troubleshooting.html)
+
+# 📁 Project Structure
+
+```
+src/
+├── App.jsx                    # Main app component (simplified)
+├── App.css                    # Main styles
+├── components/                # Reusable UI components
+│   ├── TabNavigation.jsx      # Tab navigation component
+│   ├── EventForm.jsx          # Event logging form
+│   ├── SettingsPanel.jsx     # Settings management panel
+│   ├── ItemManager.jsx       # Reusable item management component
+│   └── RecentEvents.jsx      # Recent events display
+├── hooks/                     # Custom React hooks
+│   ├── useFormState.js        # Form state management hook
+│   └── useItemManager.js      # Item management logic hook
+├── data/                      # Static data and constants
+│   └── constants.js           # App constants (event types, pain levels, etc.)
+└── utils/                     # Utility functions
+    └── timeUtils.js           # Time formatting and helper functions
+```
+
+## 🔧 Of note
+
+### 1. **Custom Hooks for State Management**
+- `useFormState`: Manages all form-related state and actions
+- `useItemManager`: Handles CRUD operations for pain locations and allergens
+
+### 2. **Component Separation**
+- **TabNavigation**: Handles tab switching logic
+- **EventForm**: All event logging functionality
+- **SettingsPanel**: Configuration management interface  
+- **ItemManager**: Reusable component for managing lists (allergens, pain locations)
+- **RecentEvents**: Display and formatting of logged events
+
+### 3. **Centralized Data**
+- All constants in `data/constants.js`
+- Utility functions in `utils/` directory
+
+## 🚀 How to Add New Features
+
+### Adding a New Item Type (e.g., Medications):
+1. Add the item type to `data/constants.js`
+2. Create a new manager instance using `useItemManager` hook
+3. Add the configuration section to `SettingsPanel`
+4. No need to duplicate CRUD logic!
+
+### Adding a New Form Field:
+1. Update the form schema in `useFormState`
+2. Add the field to `EventForm` component
+3. Update `RecentEvents` to display the new field
+
+### Adding Utility Functions:
+1. Add to appropriate file in `utils/` directory
+2. Import where needed - no code duplication
