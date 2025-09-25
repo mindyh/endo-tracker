@@ -59,7 +59,6 @@ export const ItemManager = ({
           </div>
           <div className="item-list">
             {items.map((item) => {
-              const isDefault = defaultItems.find(d => d.key === item.key);
               const isEditing = editingItem === item.key;
               return (
                 <div key={item.key} className="item-container">
@@ -103,7 +102,6 @@ export const ItemManager = ({
                     <>
                       <span className="item-name">{item.label}</span>
                       <div className="item-actions">
-                        {isDefault && <span className="default-badge">Default</span>}
                         <button
                           type="button"
                           onClick={() => startEditing(item)}

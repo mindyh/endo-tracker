@@ -528,14 +528,16 @@ body {
 }
 
 .section-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  padding: 1.5rem;
+  height: 56px; /* fixed height to guarantee centering */
+  padding: 0 1.25rem; /* horizontal padding only */
   cursor: pointer;
   background: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
   transition: background-color 0.2s ease;
+  column-gap: 0.5rem;
 }
 
 .section-header:hover {
@@ -544,14 +546,30 @@ body {
 
 .section-header h4 {
   margin: 0;
+  line-height: 56px; /* match header height for perfect centering */
+  height: 56px;
+  display: block;
 }
 
+/* Fallback: force all direct children to be vertically centered */
+.section-header > * {
+  align-self: center;
+}
+
+/* Ensure the chevron button is vertically centered and sized consistently */
 .collapse-btn {
   background: none;
   border: none;
   font-size: 1rem;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0; /* remove extra padding so centering is accurate */
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1; /* avoid baseline misalignment */
   transition: transform 0.2s ease;
 }
 
@@ -564,6 +582,11 @@ body {
   font-weight: 600;
   color: #374151;
   margin-bottom: 1rem;
+}
+
+/* Ensure header titles don't inherit bottom margin from generic rule */
+.settings-section .section-header h4 {
+  margin-bottom: 0 !important;
 }
 
 /* Add Item (unified for locations and allergens) */

@@ -101,7 +101,7 @@ export const EventTypeManager = ({
   return (
     <div className="settings-group">
       <div className="section-header" onClick={toggleCollapsed}>
-        <h4>Event Type Configuration</h4>
+        <h4>Events</h4>
         <button type="button" className="collapse-btn">
           {collapsed ? '►' : '▼'}
         </button>
