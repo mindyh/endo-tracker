@@ -1,5 +1,5 @@
-import { painLevels } from '../../web/data/constants';
-import { dateTimeLocalToISO } from '../../web/utils/timeUtils';
+import { painLevels } from '../data/constants';
+import { dateTimeLocalToISO } from '../utils/timeUtils';
 import { SelectableButtonGroup } from './SelectableButtonGroup';
 
 export const EventForm = ({

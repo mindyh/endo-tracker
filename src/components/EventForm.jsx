@@ -1,1 +1,0 @@
-export { EventForm } from '../../shared/components/EventForm';

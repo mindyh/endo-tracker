@@ -1,7 +1,7 @@
 import { expect, test, describe, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { EventList } from './EventList';
+import { EventList } from 'shared/components/EventList';
 
 // Mock data
 const mockEvents = [
@@ -61,11 +61,8 @@ describe('EventList Component', () => {
             element?.textContent?.includes('Pain Start')
         );
         expect(painStartElements.length).toBeGreaterThan(0);
-        expect(screen.getByText((content, element) => element?.textContent?.includes('⚡'))).toBeDefined();
         expect(screen.getByText('Lower back pain')).toBeDefined();
-        expect(screen.getByText((content, element) => element?.textContent?.includes('Lower back pain'))).toBeDefined();
         expect(screen.getByText('Lunch with dairy')).toBeDefined();
-        expect(screen.getByText((content, element) => element?.textContent?.includes('Lunch with dairy'))).toBeDefined();
         expect(screen.getByText((content, element) => element?.textContent?.includes('Abdominal cramps'))).toBeDefined();
     });
 

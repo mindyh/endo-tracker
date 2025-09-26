@@ -1,7 +1,7 @@
 import { expect, test, describe, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { EventForm } from '../../shared/components/EventForm';
+import { EventForm } from './EventForm';
 
 const mockPainLocations = [
     { key: 'lower-back', label: 'Lower Back' },

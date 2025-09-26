@@ -1,6 +1,6 @@
-import { useDragAndDrop } from '../hooks/useDragAndDrop';
+import { useDragAndDrop } from "../../web/hooks/useDragAndDrop";
+import { useKeyPress } from "../hooks/useKeyPress";
 import { CollapsibleSection } from './CollapsibleSection';
-import { useKeyPress } from '../hooks/useKeyPress';
 
 export const ItemManager = ({
   title,

@@ -1,17 +1,16 @@
-
 import './App.css';
 import { useState } from 'react';
-import { useItemManager } from './hooks/useItemManager';
-import { useFormState } from './hooks/useFormState';
-import { useTimezone } from './hooks/useTimezone';
-import { useEventTypeConfig } from './hooks/useEventTypeConfig';
-import { TabNavigation } from './components/TabNavigation';
+import { useItemManager } from '../shared/hooks/useItemManager';
+import { useFormState } from '../shared/hooks/useFormState';
+import { useTimezone } from '../shared/hooks/useTimezone';
+import { useEventTypeConfig } from '../shared/hooks/useEventTypeConfig';
+import { TabNavigation } from '../shared/components/TabNavigation';
 import { EventForm } from '../shared/components/EventForm';
-import { SettingsPanel } from './components/SettingsPanel';
-import { RecentEvents } from './components/RecentEvents';
-import { History } from './components/History';
-import { eventTypes, painLocations, commonAllergens, commonSupplements, commonTreatments, treatmentEffectiveness, painLevels } from './data/constants';
-import { formatTime } from './utils/timeUtils';
+import { SettingsPanel } from '../shared/components/SettingsPanel';
+import { RecentEvents } from '../shared/components/RecentEvents';
+import { History } from '../shared/components/History';
+import { eventTypes, painLocations, commonAllergens, commonSupplements, commonTreatments, treatmentEffectiveness, painLevels } from '../shared/data/constants';
+import { formatTime } from '../shared/utils/timeUtils';
 
 // Constants moved to ./data/constants.js
 
