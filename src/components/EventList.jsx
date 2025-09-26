@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { eventTypes, painLevels } from '../data/constants';
 import { formatTime, dateTimeLocalToISO } from '../utils/timeUtils';
+import { SelectableButtonGroup } from './SelectableButtonGroup';
 
 export const EventList = ({
     events,
@@ -175,18 +176,13 @@ export const EventList = ({
                             {(editForm.type === 'pain-start' || event.painLocations?.length > 0) && (
                                 <div className="form-group">
                                     <label>Pain Locations</label>
-                                    <div className="checkbox-grid">
-                                        {painLocations.map(location => (
-                                            <button
-                                                key={location.key}
-                                                type="button"
-                                                className={`checkbox-btn ${editForm.painLocations?.includes(location.key) ? 'active' : ''}`}
-                                                onClick={() => toggleArrayItem('painLocations', location.key)}
-                                            >
-                                                {location.label}
-                                            </button>
-                                        ))}
-                                    </div>
+                                    <SelectableButtonGroup
+                                        items={painLocations}
+                                        selectedItems={editForm.painLocations || []}
+                                        onToggle={(key) => toggleArrayItem('painLocations', key)}
+                                        className="checkbox-grid"
+                                        buttonClassName="checkbox-btn"
+                                    />
                                 </div>
                             )}
 

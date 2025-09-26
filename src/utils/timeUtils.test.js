@@ -4,17 +4,17 @@ import { formatTime, dateTimeLocalToISO } from './timeUtils';
 describe('timeUtils', () => {
     describe('formatTime', () => {
         test('formats ISO timestamp to readable time', () => {
-            const timestamp = '2025-09-26T14:30:00.000Z';
+            const timestamp = '2024-01-15T14:30:00.000Z';
             const timezone = 'America/New_York';
 
             const result = formatTime(timestamp, timezone);
 
             // Should include time and date info (exact format may vary by locale)
-            expect(result).toContain('10:30'); // 2:30 PM UTC = 10:30 AM EST
+            expect(result).toContain('9:30'); // 2:30 PM UTC = 9:30 AM EST (standard time)
         });
 
         test('handles different timezones', () => {
-            const timestamp = '2025-09-26T14:30:00.000Z';
+            const timestamp = '2024-01-15T14:30:00.000Z';
 
             const nyResult = formatTime(timestamp, 'America/New_York');
             const laResult = formatTime(timestamp, 'America/Los_Angeles');
@@ -23,7 +23,7 @@ describe('timeUtils', () => {
         });
 
         test('handles datetime-local format', () => {
-            const timestamp = '2025-09-26T14:30';
+            const timestamp = '2024-01-15T14:30';
             const timezone = 'America/New_York';
 
             const result = formatTime(timestamp, timezone);
@@ -43,12 +43,12 @@ describe('timeUtils', () => {
 
         test('handles empty input', () => {
             const result = dateTimeLocalToISO('');
-            expect(result).toBe('');
+            expect(result).toBe(null);
         });
 
         test('handles null/undefined input', () => {
-            expect(dateTimeLocalToISO(null)).toBe('');
-            expect(dateTimeLocalToISO(undefined)).toBe('');
+            expect(dateTimeLocalToISO(null)).toBe(null);
+            expect(dateTimeLocalToISO(undefined)).toBe(null);
         });
 
         test('preserves timezone information', () => {

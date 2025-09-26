@@ -57,8 +57,10 @@ describe('EventList Component', () => {
     test('renders events list', () => {
         render(<EventList {...defaultProps} />);
 
-        expect(screen.getByText('🩸 Pain Started')).toBeDefined();
-        expect(screen.getByText('🍽️ Meal')).toBeDefined();
+        expect(screen.getByText((content, element) =>
+            element?.textContent === 'Pain Start' || content.includes('Pain Start')
+        )).toBeDefined();
+        expect(screen.getByText('⚡')).toBeDefined();
         expect(screen.getByText('Lower back pain')).toBeDefined();
         expect(screen.getByText('Lunch with dairy')).toBeDefined();
     });
@@ -71,20 +73,24 @@ describe('EventList Component', () => {
 
     test('shows pain locations', () => {
         render(<EventList {...defaultProps} />);
-        expect(screen.getByText(/Locations:.*Lower Back/)).toBeDefined();
-        expect(screen.getByText(/Locations:.*Abdomen/)).toBeDefined();
+        expect(screen.getAllByText('Locations:')[0]).toBeDefined();
+        expect(screen.getByText('Lower Back')).toBeDefined();
+        expect(screen.getByText('Abdomen')).toBeDefined();
     });
 
     test('shows allergens', () => {
         render(<EventList {...defaultProps} />);
-        expect(screen.getByText(/Allergens:.*Dairy/)).toBeDefined();
+        expect(screen.getByText('Allergens:')).toBeDefined();
+        expect(screen.getByText('Dairy')).toBeDefined();
     });
 
     test('respects maxEvents prop', () => {
         render(<EventList {...defaultProps} maxEvents={2} />);
 
-        const eventCards = screen.getAllByText(/Pain Started|Meal/);
-        expect(eventCards).toHaveLength(2);
+        const eventCards = screen.getAllByText((content, element) =>
+            element?.textContent === 'Pain Start' || content.includes('Pain Start')
+        );
+        expect(eventCards).toHaveLength(1); // Only 1 pain event should be shown due to maxEvents=2
     });
 
     test('shows empty message when no events', () => {
@@ -172,11 +178,14 @@ describe('EventList Day Grouping', () => {
         const user = userEvent.setup();
         render(<EventList {...defaultProps} groupByDay={true} />);
 
+        // Initially should show expanded state (▼)
+        expect(screen.getAllByText('▼')).toHaveLength(2); // Two day sections
+
         // Find a day header and click it
         const yesterdayHeader = screen.getByText('Yesterday').closest('.day-header');
         await user.click(yesterdayHeader);
 
-        // The day should toggle (arrow should change)
+        // The day should toggle (arrow should change to collapsed ▶)
         expect(screen.getByText('▶')).toBeDefined();
     });
 

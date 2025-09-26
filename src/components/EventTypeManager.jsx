@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import { CollapsibleSection } from './CollapsibleSection';
 
-export const EventTypeManager = ({ 
-  allEventTypes, 
-  activeEventTypes, 
-  setActiveEventTypes 
+export const EventTypeManager = ({
+  allEventTypes,
+  activeEventTypes,
+  setActiveEventTypes
 }) => {
   const [collapsed, setCollapsed] = useState(true);
 
@@ -38,20 +39,20 @@ export const EventTypeManager = ({
   const handleDropOnItem = (e, dropIndex, dropSection) => {
     e.preventDefault();
     e.currentTarget.classList.remove('drag-over');
-    
+
     const dragData = JSON.parse(e.dataTransfer.getData('text/plain'));
     const { index: dragIndex, section: dragSection } = dragData;
-    
+
     if (dragSection === 'active' && dropSection === 'active') {
       // Reordering within active events
       if (dragIndex === dropIndex) return;
-      
+
       const newOrder = [...activeEventTypes];
       const draggedItem = newOrder[dragIndex];
-      
+
       newOrder.splice(dragIndex, 1);
       newOrder.splice(dropIndex, 0, draggedItem);
-      
+
       setActiveEventTypes(newOrder);
     }
   };
@@ -59,12 +60,12 @@ export const EventTypeManager = ({
   const handleDropOnSection = (e, targetSection) => {
     e.preventDefault();
     e.currentTarget.classList.remove('drag-over');
-    
+
     const dragData = JSON.parse(e.dataTransfer.getData('text/plain'));
     const { index: dragIndex, section: dragSection } = dragData;
-    
+
     if (dragSection === targetSection) return;
-    
+
     if (dragSection === 'active' && targetSection === 'hidden') {
       // Move from active to hidden
       const draggedItem = activeEventTypes[dragIndex];
@@ -72,7 +73,7 @@ export const EventTypeManager = ({
       setActiveEventTypes(newActiveEvents);
     } else if (dragSection === 'hidden' && targetSection === 'active') {
       // Move from hidden to active
-      const hiddenEvents = allEventTypes.filter(eventType => 
+      const hiddenEvents = allEventTypes.filter(eventType =>
         !activeEventTypes.some(et => et.key === eventType.key)
       );
       const draggedItem = hiddenEvents[dragIndex];
@@ -84,7 +85,7 @@ export const EventTypeManager = ({
 
   const toggleEventType = (eventType) => {
     const isActive = activeEventTypes.some(et => et.key === eventType.key);
-    
+
     if (isActive) {
       // Remove from active list
       setActiveEventTypes(activeEventTypes.filter(et => et.key !== eventType.key));
@@ -99,17 +100,13 @@ export const EventTypeManager = ({
   };
 
   return (
-    <div className="settings-group">
-      <div className="section-header" onClick={toggleCollapsed}>
-        <h4>Events</h4>
-        <button type="button" className="collapse-btn">
-          {collapsed ? '►' : '▼'}
-        </button>
-      </div>
-      {!collapsed && (
-        <div className="section-content">
-          <div className="manager-sections">
-        <div 
+    <CollapsibleSection
+      title="Events"
+      collapsed={collapsed}
+      onToggle={toggleCollapsed}
+    >
+      <div className="manager-sections">
+        <div
           className="active-events-section drop-zone"
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -118,8 +115,8 @@ export const EventTypeManager = ({
           <h5>Active Events (Shown on Logging Page)</h5>
           <div className="active-events-list">
             {activeEventTypes.map((eventType, index) => (
-              <div 
-                key={eventType.key} 
+              <div
+                key={eventType.key}
                 className="active-event-item"
                 draggable="true"
                 onDragStart={(e) => handleDragStart(e, index, 'active')}
@@ -141,7 +138,7 @@ export const EventTypeManager = ({
           </div>
         </div>
 
-        <div 
+        <div
           className="hidden-events-section drop-zone"
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -152,8 +149,8 @@ export const EventTypeManager = ({
             {allEventTypes
               .filter(eventType => !activeEventTypes.some(et => et.key === eventType.key))
               .map((eventType, index) => (
-                <div 
-                  key={eventType.key} 
+                <div
+                  key={eventType.key}
                   className="hidden-event-item"
                   draggable="true"
                   onDragStart={(e) => handleDragStart(e, index, 'hidden')}
@@ -173,19 +170,17 @@ export const EventTypeManager = ({
             <p className="no-hidden-events">All event types are currently active</p>
           )}
         </div>
-          </div>
-          
-          <div className="manager-footer">
-            <button 
-              type="button" 
-              onClick={resetToDefault}
-              className="reset-btn"
-            >
-              Reset to Default
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+      </div>
+
+      <div className="manager-footer">
+        <button
+          type="button"
+          onClick={resetToDefault}
+          className="reset-btn"
+        >
+          Reset to Default
+        </button>
+      </div>
+    </CollapsibleSection>
   );
 };

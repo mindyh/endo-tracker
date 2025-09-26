@@ -27,28 +27,44 @@ const mockEventTypes = [
 ];
 
 const defaultProps = {
-    onAddEvent: vi.fn(),
+    form: {
+        type: '',
+        details: '',
+        painLevel: '',
+        painLocations: [],
+        allergens: [],
+        supplements: [],
+        treatments: [],
+        effectiveness: '',
+        timestamp: '2025-09-26T07:13'
+    },
+    handleChange: vi.fn(),
+    toggleArrayItem: vi.fn(),
+    onSubmit: vi.fn(),
     painLocations: mockPainLocations,
     allergens: mockAllergens,
     supplements: mockSupplements,
-    eventTypes: mockEventTypes
+    eventTypes: mockEventTypes,
+    treatments: [],
+    treatmentEffectiveness: [],
+    timezone: 'UTC'
 };
 
 describe('EventForm Component', () => {
     test('renders form title and quick buttons', () => {
         render(<EventForm {...defaultProps} />);
 
-        expect(screen.getByText('Log New Event')).toBeDefined();
-        expect(screen.getByText('🩸 Pain Started')).toBeDefined();
-        expect(screen.getByText('🍽️ Meal')).toBeDefined();
-        expect(screen.getByText('💊 Supplements')).toBeDefined();
+        expect(screen.getByText('Log Event')).toBeDefined();
+        expect(screen.getByRole('button', { name: /Pain Started/i })).toBeDefined();
+        expect(screen.getByRole('button', { name: /Meal/i })).toBeDefined();
+        expect(screen.getByRole('button', { name: /Supplements/i })).toBeDefined();
     });
 
     test('selects event type when quick button clicked', async () => {
         const user = userEvent.setup();
         render(<EventForm {...defaultProps} />);
 
-        const painButton = screen.getByText('🩸 Pain Started');
+        const painButton = screen.getByRole('button', { name: /Pain Started/i });
         await user.click(painButton);
 
         // Should show pain-specific fields
@@ -60,7 +76,7 @@ describe('EventForm Component', () => {
         const user = userEvent.setup();
         render(<EventForm {...defaultProps} />);
 
-        const mealButton = screen.getByText('🍽️ Meal');
+        const mealButton = screen.getByRole('button', { name: /Meal/i });
         await user.click(mealButton);
 
         expect(screen.getByText('Allergens')).toBeDefined();
@@ -72,7 +88,7 @@ describe('EventForm Component', () => {
         const user = userEvent.setup();
         render(<EventForm {...defaultProps} />);
 
-        const supplementButton = screen.getByText('💊 Supplements');
+        const supplementButton = screen.getByRole('button', { name: /Supplements/i });
         await user.click(supplementButton);
 
         expect(screen.getByText('Supplements')).toBeDefined();
@@ -84,10 +100,10 @@ describe('EventForm Component', () => {
         const user = userEvent.setup();
         render(<EventForm {...defaultProps} />);
 
-        const painButton = screen.getByText('🩸 Pain Started');
+        const painButton = screen.getByRole('button', { name: /Pain Started/i });
         await user.click(painButton);
 
-        const detailsInput = screen.getByPlaceholderText('Additional details...');
+        const detailsInput = screen.getByPlaceholderText('Add notes, triggers, or context...');
         await user.type(detailsInput, 'Sharp cramping pain');
 
         expect(screen.getByDisplayValue('Sharp cramping pain')).toBeDefined();
@@ -97,20 +113,21 @@ describe('EventForm Component', () => {
         const user = userEvent.setup();
         render(<EventForm {...defaultProps} />);
 
-        const painButton = screen.getByText('🩸 Pain Started');
+        const painButton = screen.getByRole('button', { name: /Pain Started/i });
         await user.click(painButton);
 
-        const painLevelSelect = screen.getByDisplayValue('Select pain level');
-        await user.selectOptions(painLevelSelect, '7');
+        const painLevelSlider = screen.getByRole('slider');
+        await user.clear(painLevelSlider);
+        await user.type(painLevelSlider, '7');
 
-        expect(screen.getByDisplayValue('7')).toBeDefined();
+        expect(painLevelSlider).toHaveValue('7');
     });
 
     test('allows selecting multiple pain locations', async () => {
         const user = userEvent.setup();
         render(<EventForm {...defaultProps} />);
 
-        const painButton = screen.getByText('🩸 Pain Started');
+        const painButton = screen.getByRole('button', { name: /Pain Started/i });
         await user.click(painButton);
 
         // Select multiple pain locations
@@ -128,7 +145,7 @@ describe('EventForm Component', () => {
         const user = userEvent.setup();
         render(<EventForm {...defaultProps} />);
 
-        const mealButton = screen.getByText('🍽️ Meal');
+        const mealButton = screen.getByRole('button', { name: /Meal/i });
         await user.click(mealButton);
 
         const dairyBtn = screen.getByRole('button', { name: 'Dairy' });
@@ -147,19 +164,20 @@ describe('EventForm Component', () => {
         render(<EventForm {...defaultProps} onAddEvent={mockAddEvent} />);
 
         // Select event type
-        const painButton = screen.getByText('🩸 Pain Started');
+        const painButton = screen.getByRole('button', { name: /Pain Started/i });
         await user.click(painButton);
 
         // Fill in details
-        const detailsInput = screen.getByPlaceholderText('Additional details...');
+        const detailsInput = screen.getByPlaceholderText('Add notes, triggers, or context...');
         await user.type(detailsInput, 'Test pain');
 
         // Select pain level
-        const painLevelSelect = screen.getByDisplayValue('Select pain level');
-        await user.selectOptions(painLevelSelect, '5');
+        const painLevelSlider = screen.getByRole('slider');
+        await user.clear(painLevelSlider);
+        await user.type(painLevelSlider, '5');
 
         // Submit form
-        const submitButton = screen.getByText('Log Event');
+        const submitButton = screen.getByText('📝 Log Event');
         await user.click(submitButton);
 
         expect(mockAddEvent).toHaveBeenCalledWith(expect.objectContaining({
@@ -175,13 +193,13 @@ describe('EventForm Component', () => {
         render(<EventForm {...defaultProps} onAddEvent={mockAddEvent} />);
 
         // Fill and submit form
-        const painButton = screen.getByText('🩸 Pain Started');
+        const painButton = screen.getByRole('button', { name: /Pain Started/i });
         await user.click(painButton);
 
-        const detailsInput = screen.getByPlaceholderText('Additional details...');
+        const detailsInput = screen.getByPlaceholderText('Add notes, triggers, or context...');
         await user.type(detailsInput, 'Test pain');
 
-        const submitButton = screen.getByText('Log Event');
+        const submitButton = screen.getByText('📝 Log Event');
         await user.click(submitButton);
 
         // Form should reset
@@ -194,7 +212,7 @@ describe('EventForm Component', () => {
         render(<EventForm {...defaultProps} onAddEvent={mockAddEvent} />);
 
         // Try to submit without selecting event type
-        const submitButton = screen.getByText('Log Event');
+        const submitButton = screen.getByText('📝 Log Event');
         await user.click(submitButton);
 
         // Should not call onAddEvent
@@ -205,7 +223,7 @@ describe('EventForm Component', () => {
         const user = userEvent.setup();
         render(<EventForm {...defaultProps} />);
 
-        const painButton = screen.getByText('🩸 Pain Started');
+        const painButton = screen.getByRole('button', { name: /Pain Started/i });
         await user.click(painButton);
 
         const datetimeInput = screen.getByLabelText(/When/);

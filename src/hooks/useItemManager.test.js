@@ -28,6 +28,11 @@ describe('useItemManager', () => {
 
         act(() => {
             result.current.setNewInput('New Location');
+        });
+
+        expect(result.current.newInput).toBe('New Location');
+
+        act(() => {
             result.current.addItem();
         });
 
@@ -71,7 +76,7 @@ describe('useItemManager', () => {
         expect(result.current.collapsed).toBe(true);
 
         act(() => {
-            result.current.setCollapsed(false);
+            result.current.toggleCollapsed();
         });
 
         expect(result.current.collapsed).toBe(false);
@@ -85,7 +90,7 @@ describe('useItemManager', () => {
             result.current.startEditing(item);
         });
 
-        expect(result.current.editingItem).toEqual(item);
+        expect(result.current.editingItem).toBe(item.key);
         expect(result.current.editInput).toBe('Test');
 
         act(() => {

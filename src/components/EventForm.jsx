@@ -1,5 +1,6 @@
 import { painLevels } from '../data/constants';
 import { dateTimeLocalToISO } from '../utils/timeUtils';
+import { SelectableButtonGroup } from './SelectableButtonGroup';
 
 export const EventForm = ({
   form,
@@ -19,36 +20,29 @@ export const EventForm = ({
     <form className="detailed-form" onSubmit={onSubmit}>
       <div className="form-group">
         <label>Event Type</label>
-        <div className="quick-buttons">
-          {eventTypes.map((et) => (
-            <button
-              key={et.key}
-              type="button"
-              className={`quick-btn ${form.type === et.key ? 'active' : ''}`}
-              onClick={() => handleChange({ target: { name: 'type', value: et.key } })}
-            >
-              <span className="emoji">{et.emoji}</span>
-              <span>{et.label}</span>
-            </button>
-          ))}
-        </div>
+        <SelectableButtonGroup
+          items={eventTypes}
+          selectedItems={form.type ? [form.type] : []}
+          onToggle={(key) => handleChange({ target: { name: 'type', value: key } })}
+          renderItem={(item) => (
+            <>
+              <span className="emoji">{item.emoji}</span>
+              <span>{item.label}</span>
+            </>
+          )}
+        />
       </div>
 
       {form.type === 'food' && (
         <div className="form-group">
           <label>Potential Allergens (optional)</label>
-          <div className="allergen-selection">
-            {allergens.map((allergen) => (
-              <button
-                key={allergen.key}
-                type="button"
-                className={`allergen-btn ${form.allergens.includes(allergen.key) ? 'active' : ''}`}
-                onClick={() => toggleArrayItem('allergens', allergen.key)}
-              >
-                {allergen.label}
-              </button>
-            ))}
-          </div>
+          <SelectableButtonGroup
+            items={allergens}
+            selectedItems={form.allergens || []}
+            onToggle={(key) => toggleArrayItem('allergens', key)}
+            className="allergen-selection"
+            buttonClassName="allergen-btn"
+          />
         </div>
       )}
 
@@ -79,18 +73,13 @@ export const EventForm = ({
 
           <div className="form-group">
             <label>Pain Location(s)</label>
-            <div className="pain-locations">
-              {painLocations.map((location) => (
-                <button
-                  key={location.key}
-                  type="button"
-                  className={`location-btn ${form.painLocations.includes(location.key) ? 'active' : ''}`}
-                  onClick={() => toggleArrayItem('painLocations', location.key)}
-                >
-                  {location.label}
-                </button>
-              ))}
-            </div>
+            <SelectableButtonGroup
+              items={painLocations}
+              selectedItems={form.painLocations || []}
+              onToggle={(key) => toggleArrayItem('painLocations', key)}
+              className="pain-locations"
+              buttonClassName="location-btn"
+            />
           </div>
         </>
       )}
@@ -98,18 +87,13 @@ export const EventForm = ({
       {form.type === 'supplements' && (
         <div className="form-group">
           <label>Supplement(s)</label>
-          <div className="supplement-selection">
-            {supplements.map((supplement) => (
-              <button
-                key={supplement.key}
-                type="button"
-                className={`supplement-btn ${form.supplements.includes(supplement.key) ? 'active' : ''}`}
-                onClick={() => toggleArrayItem('supplements', supplement.key)}
-              >
-                {supplement.label}
-              </button>
-            ))}
-          </div>
+          <SelectableButtonGroup
+            items={supplements}
+            selectedItems={form.supplements || []}
+            onToggle={(key) => toggleArrayItem('supplements', key)}
+            className="supplement-selection"
+            buttonClassName="supplement-btn"
+          />
         </div>
       )}
 
@@ -117,48 +101,28 @@ export const EventForm = ({
         <>
           <div className="form-group">
             <label>Treatment(s)</label>
-            <div className="supplement-selection">
-              {treatments?.map((treatment) => (
-                <button
-                  key={treatment.key}
-                  type="button"
-                  className={`supplement-btn ${form.treatments.includes(treatment.key) ? 'active' : ''}`}
-                  onClick={() => toggleArrayItem('treatments', treatment.key)}
-                >
-                  {treatment.label}
-                </button>
-              ))}
-            </div>
+            <SelectableButtonGroup
+              items={treatments || []}
+              selectedItems={form.treatments || []}
+              onToggle={(key) => toggleArrayItem('treatments', key)}
+              className="supplement-selection"
+              buttonClassName="supplement-btn"
+            />
           </div>
 
           <div className="form-group">
             <label>Did it work?</label>
-            <div className="quick-buttons">
-              <button
-                type="button"
-                className={`quick-btn ${form.effectiveness === 'yes' ? 'active' : ''}`}
-                onClick={() => handleChange({ target: { name: 'effectiveness', value: 'yes' } })}
-              >
-                <span className="emoji">✅</span>
-                <span>Yes</span>
-              </button>
-              <button
-                type="button"
-                className={`quick-btn ${form.effectiveness === 'no' ? 'active' : ''}`}
-                onClick={() => handleChange({ target: { name: 'effectiveness', value: 'no' } })}
-              >
-                <span className="emoji">❌</span>
-                <span>No</span>
-              </button>
-              <button
-                type="button"
-                className={`quick-btn ${form.effectiveness === 'unsure' ? 'active' : ''}`}
-                onClick={() => handleChange({ target: { name: 'effectiveness', value: 'unsure' } })}
-              >
-                <span className="emoji">🤷</span>
-                <span>Unsure</span>
-              </button>
-            </div>
+            <SelectableButtonGroup
+              items={treatmentEffectiveness}
+              selectedItems={form.effectiveness ? [form.effectiveness] : []}
+              onToggle={(key) => handleChange({ target: { name: 'effectiveness', value: key } })}
+              renderItem={(item) => (
+                <>
+                  <span className="emoji">{item.emoji}</span>
+                  <span>{item.label}</span>
+                </>
+              )}
+            />
           </div>
         </>
       )}

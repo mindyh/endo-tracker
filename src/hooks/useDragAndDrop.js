@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-export const useDragAndDrop = (onReorder) => {
+export const useDragAndDrop = (onReorder, options = {}) => {
     const [draggedIndex, setDraggedIndex] = useState(null);
+    const { supportsSections = false } = options;
 
     const handleDragStart = (e, index) => {
         e.dataTransfer.setData('text/plain', index.toString());

@@ -48,6 +48,8 @@ export function nowDateTimeLocalInTimeZone(timezone) {
 
 // Convert a datetime-local string (interpreted in selected timezone) to ISO string
 export function dateTimeLocalToISO(dateTimeLocal, timezone) {
+  if (!dateTimeLocal) return null;
+
   // Parse components
   const [datePart, timePart] = dateTimeLocal.split('T');
   const [y, m, d] = datePart.split('-').map(Number);

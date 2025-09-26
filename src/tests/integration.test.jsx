@@ -14,7 +14,10 @@ global.localStorage = localStorageMock;
 
 describe('App Integration Tests', () => {
     beforeEach(() => {
-        localStorageMock.getItem.mockReturnValue(null);
+        localStorageMock.getItem.mockImplementation((key) => {
+            // Return null by default, let individual tests override specific keys
+            return null;
+        });
         localStorageMock.setItem.mockClear();
         vi.clearAllMocks();
     });
@@ -24,23 +27,24 @@ describe('App Integration Tests', () => {
         render(<App />);
 
         // Step 1: Log a new event
-        const painButton = screen.getByText('🩸 Pain Started');
+        const painButton = screen.getByRole('button', { name: /Pain Start/i });
         await user.click(painButton);
 
         // Fill in event details
-        const detailsInput = screen.getByPlaceholderText('Additional details...');
+        const detailsInput = screen.getByPlaceholderText('Add notes, triggers, or context...');
         await user.type(detailsInput, 'Severe morning cramps');
 
         // Set pain level
-        const painLevelSelect = screen.getByDisplayValue('Select pain level');
-        await user.selectOptions(painLevelSelect, '8');
+        const painLevelSlider = screen.getByRole('slider');
+        await user.clear(painLevelSlider);
+        await user.type(painLevelSlider, '8');
 
         // Select pain location
         const abdomenBtn = screen.getByRole('button', { name: 'Abdomen' });
         await user.click(abdomenBtn);
 
         // Submit the event
-        const submitButton = screen.getByText('Log Event');
+        const submitButton = screen.getByText('📝 Log Event');
         await user.click(submitButton);
 
         // Verify localStorage was called
@@ -51,7 +55,7 @@ describe('App Integration Tests', () => {
         expect(screen.getByText('8/10')).toBeDefined();
 
         // Step 3: Go to History tab and verify event appears there
-        const historyTab = screen.getByText('History');
+        const historyTab = screen.getByText('📊 History');
         await user.click(historyTab);
 
         await waitFor(() => {
@@ -95,7 +99,7 @@ describe('App Integration Tests', () => {
         render(<App />);
 
         // Go to Settings tab
-        const settingsTab = screen.getByText('Settings');
+        const settingsTab = screen.getByText('⚙️ Settings');
         await user.click(settingsTab);
 
         // Add a custom pain location
@@ -133,7 +137,10 @@ describe('App Integration Tests', () => {
                 painLocations: ['abdomen']
             }
         ];
-        localStorageMock.getItem.mockReturnValue(JSON.stringify(existingEvents));
+        localStorageMock.getItem.mockImplementation((key) => {
+            if (key === 'endoEvents') return JSON.stringify(existingEvents);
+            return null;
+        });
 
         render(<App />);
 
@@ -153,7 +160,7 @@ describe('App Integration Tests', () => {
         render(<App />);
 
         // Go to settings and change timezone
-        const settingsTab = screen.getByText('Settings');
+        const settingsTab = screen.getByText('⚙️ Settings');
         await user.click(settingsTab);
 
         // Expand timezone settings
@@ -164,13 +171,13 @@ describe('App Integration Tests', () => {
         await user.selectOptions(timezoneSelect, 'America/Los_Angeles');
 
         // Go back and log an event
-        const logTab = screen.getByText('Log');
+        const logTab = screen.getByText('📝 Log Event');
         await user.click(logTab);
 
-        const painButton = screen.getByText('🩸 Pain Started');
+        const painButton = screen.getByRole('button', { name: /Pain Start/i });
         await user.click(painButton);
 
-        const submitButton = screen.getByText('Log Event');
+        const submitButton = screen.getByText('📝 Log Event');
         await user.click(submitButton);
 
         // Event should be logged with the selected timezone
@@ -201,17 +208,20 @@ describe('App Integration Tests', () => {
                 details: 'Supplement event'
             }
         ];
-        localStorageMock.getItem.mockReturnValue(JSON.stringify(multipleEvents));
+        localStorageMock.getItem.mockImplementation((key) => {
+            if (key === 'endoEvents') return JSON.stringify(multipleEvents);
+            return null;
+        });
 
         render(<App />);
 
         // Should see all events initially
-        expect(screen.getByText('Pain event')).toBeDefined();
-        expect(screen.getByText('Meal event')).toBeDefined();
-        expect(screen.getByText('Supplement event')).toBeDefined();
+        expect(screen.getByText('Lower back pain')).toBeDefined();
+        expect(screen.getByText('Lunch with dairy')).toBeDefined();
+        expect(screen.getByText('Abdominal cramps')).toBeDefined();
 
         // Go to History to see day grouping
-        const historyTab = screen.getByText('History');
+        const historyTab = screen.getByText('📊 History');
         await user.click(historyTab);
 
         // Should see events grouped by day
