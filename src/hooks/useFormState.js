@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { nowDateTimeLocalInTimeZone } from '../utils/timeUtils';
 
-export const useFormState = () => {
+export const useFormState = (timezone) => {
   const [form, setForm] = useState({
     type: '',
     details: '',
@@ -8,7 +9,7 @@ export const useFormState = () => {
     painLocations: [],
     allergens: [],
     supplements: [],
-    timestamp: new Date().toISOString().slice(0, 16),
+    timestamp: nowDateTimeLocalInTimeZone(timezone),
   });
 
   const updateForm = (updates) => {
@@ -37,7 +38,7 @@ export const useFormState = () => {
       painLocations: [],
       allergens: [],
       supplements: [],
-      timestamp: new Date().toISOString().slice(0, 16),
+      timestamp: nowDateTimeLocalInTimeZone(timezone),
     });
   };
 

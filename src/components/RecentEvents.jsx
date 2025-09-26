@@ -1,7 +1,7 @@
 import { eventTypes } from '../data/constants';
 import { formatTime } from '../utils/timeUtils';
 
-export const RecentEvents = ({ events, painLocations, allergens, supplements }) => {
+export const RecentEvents = ({ events, painLocations, allergens, supplements, timezone }) => {
   if (events.length === 0) return null;
 
   return (
@@ -17,7 +17,7 @@ export const RecentEvents = ({ events, painLocations, allergens, supplements }) 
                   <span className="event-type">
                     {eventType?.label.split(' ')[1] || event.type}
                   </span>
-                  <span className="event-time">{formatTime(event.timestamp)}</span>
+                  <span className="event-time">{formatTime(event.timestamp, timezone)}</span>
                 </div>
                 {event.details && (
                   <div className="event-details">{event.details}</div>

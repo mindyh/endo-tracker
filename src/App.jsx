@@ -3,6 +3,7 @@ import './App.css';
 import { useState } from 'react';
 import { useItemManager } from './hooks/useItemManager';
 import { useFormState } from './hooks/useFormState';
+import { useTimezone } from './hooks/useTimezone';
 import { useEventTypeConfig } from './hooks/useEventTypeConfig';
 import { TabNavigation } from './components/TabNavigation';
 import { EventForm } from './components/EventForm';
@@ -18,7 +19,8 @@ function App() {
   const [activeTab, setActiveTab] = useState('log');
   
   // Use custom hooks for form and item management
-  const { form, updateForm, resetForm, toggleArrayItem, handleChange } = useFormState();
+  const { timezone, setTimezone, timezones } = useTimezone();
+  const { form, updateForm, resetForm, toggleArrayItem, handleChange } = useFormState(timezone);
   const painLocationManager = useItemManager(painLocations, 'painLocations');
   const allergenManager = useItemManager(commonAllergens, 'allergens');
   const supplementManager = useItemManager(commonSupplements, 'supplements');
@@ -77,6 +79,9 @@ function App() {
             allEventTypes={eventTypes}
             activeEventTypes={activeEventTypes}
             setActiveEventTypes={setActiveEventTypes}
+            timezone={timezone}
+            setTimezone={setTimezone}
+            timezones={timezones}
           />
         )}
 
@@ -85,6 +90,7 @@ function App() {
           painLocations={painLocationManager.items}
           allergens={allergenManager.items}
           supplements={supplementManager.items}
+          timezone={timezone}
         />
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { painLevels } from '../data/constants';
+import { dateTimeLocalToISO } from '../utils/timeUtils';
 
 export const EventForm = ({ 
   form, 
@@ -8,7 +9,8 @@ export const EventForm = ({
   painLocations, 
   allergens, 
   supplements,
-  onSubmit 
+  onSubmit,
+  timezone
 }) => (
   <div className="form-card">
     <h3>Log Event</h3>
@@ -127,7 +129,15 @@ export const EventForm = ({
           type="datetime-local"
           name="timestamp"
           value={form.timestamp}
-          onChange={handleChange}
+          onChange={(e) => {
+            // Convert the local wall time in selected timezone to ISO
+            const iso = dateTimeLocalToISO(e.target.value, timezone);
+            // We still store the input control value as the datetime-local string so the UI shows what the user picked
+            // but the event persisted timestamp (when submitting) will be this ISO
+            handleChange({ target: { name: 'timestamp', value: e.target.value } });
+            // Attach the ISO to a hidden field on form state for submission
+            handleChange({ target: { name: 'timestampISO', value: iso } });
+          }}
           required
           className="form-input"
         />
