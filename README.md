@@ -72,7 +72,7 @@ This section has moved here: [https://vitejs.dev/guide/troubleshooting.html](htt
 # 📁 Project Structure
 
 ```
-src/
+web/
 ├── App.jsx                    # Main app component (simplified)
 ├── App.css                    # Main styles
 ├── components/                # Reusable UI components

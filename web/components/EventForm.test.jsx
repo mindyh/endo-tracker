@@ -1,7 +1,7 @@
 import { expect, test, describe, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { EventForm } from './EventForm';
+import { EventForm } from '../../shared/components/EventForm';
 
 const mockPainLocations = [
     { key: 'lower-back', label: 'Lower Back' },
@@ -56,8 +56,11 @@ describe('EventForm Component', () => {
 
         expect(screen.getByText('Log Event')).toBeDefined();
         expect(screen.getByRole('button', { name: /Pain Started/i })).toBeDefined();
+        expect(screen.getByRole('button', { name: /🩸\s*Pain Started/ })).toBeDefined();
         expect(screen.getByRole('button', { name: /Meal/i })).toBeDefined();
+        expect(screen.getByRole('button', { name: /🍽️\s*Meal/ })).toBeDefined();
         expect(screen.getByRole('button', { name: /Supplements/i })).toBeDefined();
+        expect(screen.getByRole('button', { name: /💊\s*Supplements/ })).toBeDefined();
     });
 
     test('selects event type when quick button clicked', async () => {
@@ -76,19 +79,23 @@ describe('EventForm Component', () => {
         const user = userEvent.setup();
         render(<EventForm {...defaultProps} />);
 
-        const mealButton = screen.getByRole('button', { name: /Meal/i });
+        const mealButton = screen.getByRole('button', { name: /🍽️\s*Meal/ });
         await user.click(mealButton);
 
         expect(screen.getByText('Allergens')).toBeDefined();
         expect(screen.getAllByText('Dairy')).toBeDefined();
+        expect(screen.getAllByText((content, element) => element?.textContent?.includes('Dairy'))).toBeDefined();
         expect(screen.getAllByText('Gluten')).toBeDefined();
+        expect(screen.getAllByText((content, element) => element?.textContent?.includes('Gluten'))).toBeDefined();
+        const painButton = screen.getByRole('button', { name: /🩸\s*Pain Started/ });
+        const mealButton = screen.getByRole('button', { name: /🍽️\s*Meal/ });
     });
 
     test('shows supplement fields for supplement event', async () => {
         const user = userEvent.setup();
         render(<EventForm {...defaultProps} />);
 
-        const supplementButton = screen.getByRole('button', { name: /Supplements/i });
+        const supplementButton = screen.getByRole('button', { name: /💊\s*Supplements/ });
         await user.click(supplementButton);
 
         expect(screen.getByText('Supplements')).toBeDefined();
@@ -131,8 +138,9 @@ describe('EventForm Component', () => {
         await user.click(painButton);
 
         // Select multiple pain locations
-        const lowerBackBtn = screen.getByRole('button', { name: 'Lower Back' });
-        const abdomenBtn = screen.getByRole('button', { name: 'Abdomen' });
+        const lowerBackBtn = screen.getByRole('button', { name: /Lower Back/ });
+        const abdomenBtn = screen.getByRole('button', { name: /Abdomen/ });
+        // If slider is not found, fallback to getByDisplayValue or querySelector
 
         await user.click(lowerBackBtn);
         await user.click(abdomenBtn);
@@ -227,6 +235,7 @@ describe('EventForm Component', () => {
         await user.click(painButton);
 
         const datetimeInput = screen.getByLabelText(/When/);
+        // If label is not associated, fallback to getByPlaceholderText or querySelector
         await user.clear(datetimeInput);
         await user.type(datetimeInput, '2025-09-26T15:30');
 

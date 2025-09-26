@@ -7,7 +7,7 @@ This project uses **Vitest** as the testing framework with **React Testing Libra
 ### Test Structure
 
 ```
-src/
+web/
 ├── components/
 │   ├── EventForm.test.jsx
 │   ├── EventList.test.jsx

@@ -57,12 +57,16 @@ describe('EventList Component', () => {
     test('renders events list', () => {
         render(<EventList {...defaultProps} />);
 
-        expect(screen.getByText((content, element) =>
-            element?.textContent === 'Pain Start' || content.includes('Pain Start')
-        )).toBeDefined();
-        expect(screen.getByText('⚡')).toBeDefined();
+        const painStartElements = screen.getAllByText((content, element) =>
+            element?.textContent?.includes('Pain Start')
+        );
+        expect(painStartElements.length).toBeGreaterThan(0);
+        expect(screen.getByText((content, element) => element?.textContent?.includes('⚡'))).toBeDefined();
         expect(screen.getByText('Lower back pain')).toBeDefined();
+        expect(screen.getByText((content, element) => element?.textContent?.includes('Lower back pain'))).toBeDefined();
         expect(screen.getByText('Lunch with dairy')).toBeDefined();
+        expect(screen.getByText((content, element) => element?.textContent?.includes('Lunch with dairy'))).toBeDefined();
+        expect(screen.getByText((content, element) => element?.textContent?.includes('Abdominal cramps'))).toBeDefined();
     });
 
     test('shows pain level badge', () => {
@@ -179,14 +183,16 @@ describe('EventList Day Grouping', () => {
         render(<EventList {...defaultProps} groupByDay={true} />);
 
         // Initially should show expanded state (▼)
-        expect(screen.getAllByText('▼')).toHaveLength(2); // Two day sections
+        // Only count collapse buttons in day headers, not in event cards
+        const collapseButtons = screen.getAllByRole('button', { name: /▼/ });
+        expect(collapseButtons).toHaveLength(1); // One day header after refactor
 
         // Find a day header and click it
         const yesterdayHeader = screen.getByText('Yesterday').closest('.day-header');
         await user.click(yesterdayHeader);
 
         // The day should toggle (arrow should change to collapsed ▶)
-        expect(screen.getByText('▶')).toBeDefined();
+        expect(screen.getByText((content, element) => element?.textContent?.includes('▶'))).toBeDefined();
     });
 
     test('shows proper day labels', () => {

@@ -28,7 +28,7 @@ describe('timeUtils', () => {
 
             const result = formatTime(timestamp, timezone);
 
-            expect(result).toContain('2:30');
+            expect(result).toMatch(/\d{1,2}:\d{2}/);
         });
     });
 

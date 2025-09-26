@@ -6,7 +6,7 @@ import { useFormState } from './hooks/useFormState';
 import { useTimezone } from './hooks/useTimezone';
 import { useEventTypeConfig } from './hooks/useEventTypeConfig';
 import { TabNavigation } from './components/TabNavigation';
-import { EventForm } from './components/EventForm';
+import { EventForm } from '../shared/components/EventForm';
 import { SettingsPanel } from './components/SettingsPanel';
 import { RecentEvents } from './components/RecentEvents';
 import { History } from './components/History';
