@@ -27,6 +27,7 @@ export const commonAllergens = [
   { key: 'peanuts', label: 'Peanuts' },
   { key: 'shellfish', label: 'Shellfish' },
   { key: 'fish', label: 'Fish' },
+  { key: 'fodmap', label: 'FODMAP' },
 ];
 
 export const commonSupplements = [

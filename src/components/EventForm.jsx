@@ -1,13 +1,13 @@
 import { painLevels } from '../data/constants';
 import { dateTimeLocalToISO } from '../utils/timeUtils';
 
-export const EventForm = ({ 
-  form, 
-  handleChange, 
-  toggleArrayItem, 
+export const EventForm = ({
+  form,
+  handleChange,
+  toggleArrayItem,
   eventTypes,
-  painLocations, 
-  allergens, 
+  painLocations,
+  allergens,
   supplements,
   onSubmit,
   timezone
@@ -31,7 +31,7 @@ export const EventForm = ({
           ))}
         </div>
       </div>
-      
+
       {form.type === 'food' && (
         <div className="form-group">
           <label>Potential Allergens (optional)</label>
@@ -49,7 +49,7 @@ export const EventForm = ({
           </div>
         </div>
       )}
-      
+
       {form.type === 'pain-start' && (
         <>
           <div className="form-group">
@@ -74,7 +74,7 @@ export const EventForm = ({
               </div>
             )}
           </div>
-          
+
           <div className="form-group">
             <label>Pain Location(s)</label>
             <div className="pain-locations">
@@ -92,7 +92,7 @@ export const EventForm = ({
           </div>
         </>
       )}
-      
+
       {form.type === 'supplements' && (
         <div className="form-group">
           <label>Supplement(s)</label>
@@ -110,7 +110,7 @@ export const EventForm = ({
           </div>
         </div>
       )}
-      
+
       <div className="form-group">
         <label>Details (optional)</label>
         <textarea
@@ -122,7 +122,7 @@ export const EventForm = ({
           rows="2"
         />
       </div>
-      
+
       <div className="form-group">
         <label>When</label>
         <input
@@ -142,8 +142,12 @@ export const EventForm = ({
           className="form-input"
         />
       </div>
-      
-      <button type="submit" className="submit-btn">
+
+      <button
+        type="submit"
+        className="submit-btn"
+        disabled={!form.type}
+      >
         📝 Log Event
       </button>
     </form>

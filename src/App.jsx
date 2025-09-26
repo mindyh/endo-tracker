@@ -9,6 +9,7 @@ import { TabNavigation } from './components/TabNavigation';
 import { EventForm } from './components/EventForm';
 import { SettingsPanel } from './components/SettingsPanel';
 import { RecentEvents } from './components/RecentEvents';
+import { History } from './components/History';
 import { eventTypes, painLocations, commonAllergens, commonSupplements, painLevels } from './data/constants';
 import { formatTime } from './utils/timeUtils';
 
@@ -17,7 +18,7 @@ import { formatTime } from './utils/timeUtils';
 function App() {
   const [events, setEvents] = useState([]);
   const [activeTab, setActiveTab] = useState('log');
-  
+
   // Use custom hooks for form and item management
   const { timezone, setTimezone, timezones } = useTimezone();
   const { form, updateForm, resetForm, toggleArrayItem, handleChange } = useFormState(timezone);
@@ -29,6 +30,19 @@ function App() {
   // Event handlers
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate that an event type is selected
+    if (!form.type) {
+      alert('Please select an event type before logging.');
+      return;
+    }
+
+    // Additional validation for specific event types
+    if (form.type === 'pain-start' && !form.painLevel) {
+      alert('Please select a pain level for pain start events.');
+      return;
+    }
+
     setEvents((prev) => [
       { ...form, id: Date.now() },
       ...prev,
@@ -45,26 +59,64 @@ function App() {
     toggleArrayItem('allergens', allergenKey);
   };
 
+  // Functions for managing existing events
+  const updateEvent = (eventId, updatedEvent) => {
+    setEvents(prev =>
+      prev.map(event =>
+        event.id === eventId ? { ...event, ...updatedEvent } : event
+      )
+    );
+  };
+
+  const deleteEvent = (eventId) => {
+    setEvents(prev => prev.filter(event => event.id !== eventId));
+  };
+
   return (
     <div className="app">
       <div className="header">
         <h1 className="title">💚 Endo Tracker</h1>
-        <p className="subtitle">Logging for better health insights</p>
+        <p className="subtitle">Logging for insights</p>
       </div>
-      
+
       <div className="main-content">
         <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
         {activeTab === 'log' && (
-          <EventForm
-            form={form}
-            handleChange={handleChange}
-            toggleArrayItem={toggleArrayItem}
-            eventTypes={activeEventTypes}
+          <>
+            <EventForm
+              form={form}
+              handleChange={handleChange}
+              toggleArrayItem={toggleArrayItem}
+              eventTypes={activeEventTypes}
+              painLocations={painLocationManager.items}
+              allergens={allergenManager.items}
+              supplements={supplementManager.items}
+              onSubmit={handleSubmit}
+            />
+            <RecentEvents
+              events={events}
+              painLocations={painLocationManager.items}
+              allergens={allergenManager.items}
+              supplements={supplementManager.items}
+              timezone={timezone}
+              updateEvent={updateEvent}
+              deleteEvent={deleteEvent}
+              eventTypes={activeEventTypes}
+            />
+          </>
+        )}
+
+        {activeTab === 'history' && (
+          <History
+            events={events}
             painLocations={painLocationManager.items}
             allergens={allergenManager.items}
             supplements={supplementManager.items}
-            onSubmit={handleSubmit}
+            timezone={timezone}
+            updateEvent={updateEvent}
+            deleteEvent={deleteEvent}
+            eventTypes={activeEventTypes}
           />
         )}
 
@@ -84,14 +136,6 @@ function App() {
             timezones={timezones}
           />
         )}
-
-        <RecentEvents
-          events={events}
-          painLocations={painLocationManager.items}
-          allergens={allergenManager.items}
-          supplements={supplementManager.items}
-          timezone={timezone}
-        />
       </div>
     </div>
   );

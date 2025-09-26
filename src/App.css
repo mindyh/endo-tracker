@@ -19,6 +19,9 @@ body {
   min-height: 100vh;
   background: white;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  overflow-x: hidden;
+  /* Prevent horizontal scrolling */
 }
 
 /* Header */
@@ -49,6 +52,27 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+/* Responsive padding adjustments */
+@media (max-width: 480px) {
+  .main-content {
+    padding: 1rem;
+  }
+
+  .section-content {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .main-content {
+    padding: 0.75rem;
+  }
+
+  .section-content {
+    padding: 0.75rem;
+  }
 }
 
 /* Tab Navigation */
@@ -342,6 +366,18 @@ body {
   transform: translateY(0);
 }
 
+.submit-btn:disabled {
+  background: #d1d5db;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submit-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 /* Events list */
 .events-list {
   display: flex;
@@ -381,7 +417,7 @@ body {
 
 .event-header {
   display: flex;
-  justify-content: between;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 0.25rem;
 }
@@ -391,10 +427,30 @@ body {
   color: #374151;
 }
 
+.event-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .event-time {
   font-size: 0.8rem;
   color: #9ca3af;
-  margin-left: auto;
+}
+
+.edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.edit-btn:hover {
+  opacity: 1;
+  background: #f3f4f6;
 }
 
 .event-details {
@@ -513,6 +569,149 @@ body {
   margin-top: 0.25rem;
 }
 
+/* Recent Events */
+.recent-events {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f3f4f6;
+}
+
+.recent-events h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: #374151;
+}
+
+/* Event editing styles */
+.event-card.editing {
+  border: 2px solid #16a34a;
+  background: #f0fdf4;
+  border-radius: 12px;
+  padding: 0.5rem;
+}
+
+.edit-form {
+  padding: 0.5rem;
+}
+
+.edit-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.edit-form .form-group:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.edit-form label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.375rem;
+}
+
+.readonly-field {
+  padding: 0.5rem 0.75rem;
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.checkbox-btn {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.checkbox-btn:hover {
+  border-color: #16a34a;
+  background: #f0fdf4;
+}
+
+.checkbox-btn.active {
+  background: #16a34a;
+  color: white;
+  border-color: #16a34a;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.action-buttons-right {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.save-btn {
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.save-btn:hover {
+  background: #15803d;
+}
+
+.cancel-btn {
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: #4b5563;
+}
+
+.delete-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  background: #b91c1c;
+}
+
 /* Settings Section */
 .settings-section {
   display: flex;
@@ -531,8 +730,10 @@ body {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  height: 56px; /* fixed height to guarantee centering */
-  padding: 0 1.25rem; /* horizontal padding only */
+  height: 56px;
+  /* fixed height to guarantee centering */
+  padding: 0 1.25rem;
+  /* horizontal padding only */
   cursor: pointer;
   background: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
@@ -546,13 +747,14 @@ body {
 
 .section-header h4 {
   margin: 0;
-  line-height: 56px; /* match header height for perfect centering */
+  line-height: 56px;
+  /* match header height for perfect centering */
   height: 56px;
   display: block;
 }
 
 /* Fallback: force all direct children to be vertically centered */
-.section-header > * {
+.section-header>* {
   align-self: center;
 }
 
@@ -562,14 +764,16 @@ body {
   border: none;
   font-size: 1rem;
   cursor: pointer;
-  padding: 0; /* remove extra padding so centering is accurate */
+  padding: 0;
+  /* remove extra padding so centering is accurate */
   width: 32px;
   height: 32px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1; /* avoid baseline misalignment */
+  line-height: 1;
+  /* avoid baseline misalignment */
   transition: transform 0.2s ease;
 }
 
@@ -600,6 +804,8 @@ body {
 
 .add-item .form-input {
   flex: 1;
+  min-width: 0;
+  /* Allow input to shrink below its content width */
 }
 
 .add-btn {
@@ -607,11 +813,80 @@ body {
   color: white;
   border: none;
   border-radius: 12px;
-  padding: 0.875rem 1.25rem;
+  padding: 0.875rem 1rem;
   font-weight: 600;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
+  flex-shrink: 0;
+  /* Prevent button from shrinking */
+  min-width: 44px;
+  /* Ensure touch-friendly size */
+}
+
+/* Responsive adjustments for narrow screens */
+@media (max-width: 480px) {
+  .add-item {
+    gap: 0.5rem;
+  }
+
+  .add-btn {
+    padding: 0.875rem 0.75rem;
+    font-size: 1.1rem;
+    max-width: 60px;
+  }
+}
+
+@media (max-width: 380px) {
+  .add-btn {
+    padding: 0.75rem 0.5rem;
+    font-size: 1.1rem;
+    max-width: 50px;
+  }
+}
+
+@media (max-width: 350px) {
+  .add-btn {
+    padding: 0.75rem 0.4rem;
+    min-width: 44px;
+    max-width: 44px;
+    font-size: 1rem;
+  }
+}
+
+/* Emergency ultra-narrow screen support */
+@media (max-width: 340px) {
+  .add-item {
+    gap: 0.25rem;
+  }
+
+  .add-btn {
+    padding: 0.75rem 0.25rem;
+    font-size: 1rem;
+    min-width: 40px;
+    max-width: 40px;
+  }
+
+  .add-item .form-input {
+    font-size: 0.9rem;
+    padding: 0.75rem 0.5rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .add-item {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .add-btn {
+    padding: 0.875rem 1rem;
+    text-align: center;
+    font-size: 1rem;
+    min-width: auto;
+    max-width: none;
+  }
 }
 
 .add-btn:hover:not(:disabled) {
@@ -761,15 +1036,15 @@ body {
   .app {
     max-width: 500px;
   }
-  
+
   .header {
     padding: 3rem 2rem 2rem;
   }
-  
+
   .main-content {
     padding: 2rem;
   }
-  
+
   .quick-buttons {
     grid-template-columns: repeat(5, 1fr);
   }
@@ -1005,17 +1280,102 @@ body {
   margin: 0;
 }
 
+/* Day grouping styles */
+.day-section {
+  margin-bottom: 1.5rem;
+}
+
+.day-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.day-header:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.day-header h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+  flex: 1;
+}
+
+.day-count {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.collapse-btn {
+  background: none;
+  border: none;
+  font-size: 0.875rem;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.collapse-btn:hover {
+  background: #e2e8f0;
+  color: #374151;
+}
+
+.day-events {
+  margin-left: 0;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Touch improvements */
 @media (hover: none) and (pointer: coarse) {
+
   .quick-btn,
   .pain-btn,
   .submit-btn {
     min-height: 44px;
   }
-  
+
   .form-select,
   .form-input,
   .form-textarea {
     min-height: 44px;
+  }
+
+  .day-header {
+    min-height: 48px;
+  }
+
+  .collapse-btn {
+    min-height: 32px;
+    min-width: 32px;
   }
 }

@@ -1,8 +1,8 @@
-export const ItemManager = ({ 
-  title, 
-  manager, 
-  defaultItems, 
-  placeholder 
+export const ItemManager = ({
+  title,
+  manager,
+  defaultItems,
+  placeholder
 }) => {
   const {
     items,
@@ -54,7 +54,7 @@ export const ItemManager = ({
               className="add-btn"
               disabled={!newInput.trim()}
             >
-              ➕ Add
+              +
             </button>
           </div>
           <div className="item-list">
