@@ -99,7 +99,7 @@ web/
 ### 2. **Component Separation**
 - **TabNavigation**: Handles tab switching logic
 - **EventForm**: All event logging functionality
-- **SettingsPanel**: Configuration management interface  
+- **SettingsPanel**: Configuration management interface
 - **ItemManager**: Reusable component for managing lists (allergens, pain locations)
 - **RecentEvents**: Display and formatting of logged events
 
