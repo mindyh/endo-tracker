@@ -1,3 +1,5 @@
+import { useDragAndDrop } from '../hooks/useDragAndDrop';
+
 export const ItemManager = ({
   title,
   manager,
@@ -17,8 +19,19 @@ export const ItemManager = ({
     startEditing,
     cancelEditing,
     saveEdit,
-    toggleCollapsed
+    toggleCollapsed,
+    reorderItems
   } = manager;
+
+  const {
+    draggedIndex,
+    handleDragStart,
+    handleDragEnd,
+    handleDragOver,
+    handleContainerDragOver,
+    handleDragLeave,
+    handleDrop
+  } = useDragAndDrop(reorderItems);
 
   const handleKeyPress = (e, action) => {
     if (e.key === 'Enter') {
@@ -57,11 +70,25 @@ export const ItemManager = ({
               +
             </button>
           </div>
-          <div className="item-list">
-            {items.map((item) => {
+          <div
+            className="item-list drop-zone"
+            onDragOver={handleContainerDragOver}
+            onDragLeave={handleDragLeave}
+          >
+            {items.map((item, index) => {
               const isEditing = editingItem === item.key;
               return (
-                <div key={item.key} className="item-container">
+                <div
+                  key={item.key}
+                  className={`item-container ${draggedIndex === index ? 'dragging' : ''}`}
+                  draggable={!isEditing}
+                  onDragStart={(e) => handleDragStart(e, index)}
+                  onDragEnd={handleDragEnd}
+                  onDragOver={(e) => handleDragOver(e, index)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, index)}
+                  style={{ cursor: isEditing ? 'default' : 'grab' }}
+                >
                   {isEditing ? (
                     <div className="edit-item">
                       <input
@@ -100,6 +127,7 @@ export const ItemManager = ({
                     </div>
                   ) : (
                     <>
+                      <span className="drag-handle" title="Drag to reorder">⋮⋮</span>
                       <span className="item-name">{item.label}</span>
                       <div className="item-actions">
                         <button

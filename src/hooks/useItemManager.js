@@ -39,9 +39,9 @@ export const useItemManager = (initialItems, itemType) => {
 
   const saveEdit = (itemKey) => {
     if (editInput.trim()) {
-      setItems(prev => 
-        prev.map(item => 
-          item.key === itemKey 
+      setItems(prev =>
+        prev.map(item =>
+          item.key === itemKey
             ? { ...item, label: editInput.trim() }
             : item
         )
@@ -53,6 +53,15 @@ export const useItemManager = (initialItems, itemType) => {
 
   const toggleCollapsed = () => {
     setCollapsed(prev => !prev);
+  };
+
+  const reorderItems = (fromIndex, toIndex) => {
+    setItems(prev => {
+      const newItems = [...prev];
+      const [removed] = newItems.splice(fromIndex, 1);
+      newItems.splice(toIndex, 0, removed);
+      return newItems;
+    });
   };
 
   return {
@@ -68,6 +77,7 @@ export const useItemManager = (initialItems, itemType) => {
     startEditing,
     cancelEditing,
     saveEdit,
-    toggleCollapsed
+    toggleCollapsed,
+    reorderItems
   };
 };

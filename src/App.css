@@ -915,6 +915,24 @@ body {
   background: white;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+/* Drag feedback for item containers */
+.item-container[draggable="true"]:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.1);
+}
+
+.item-container.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+}
+
+.item-container.drag-over {
+  border-color: #10b981;
+  background: #f0fdf4;
+  transform: translateY(-2px);
 }
 
 .item-name {
