@@ -7,6 +7,7 @@ export const EventList = ({
     painLocations,
     allergens,
     supplements,
+    treatments,
     timezone,
     updateEvent,
     deleteEvent,
@@ -155,16 +156,6 @@ export const EventList = ({
                                 />
                             </div>
 
-                            <div className="form-group">
-                                <label>Details</label>
-                                <textarea
-                                    value={editForm.details || ''}
-                                    onChange={(e) => handleEditChange('details', e.target.value)}
-                                    className="form-textarea"
-                                    rows="2"
-                                />
-                            </div>
-
                             {(editForm.type === 'pain-start' || event.painLevel) && (
                                 <div className="form-group">
                                     <label>Pain Level</label>
@@ -235,6 +226,66 @@ export const EventList = ({
                                 </div>
                             )}
 
+                            {(editForm.type === 'treatment' || event.treatments?.length > 0) && (
+                                <div className="form-group">
+                                    <label>Treatments</label>
+                                    <div className="checkbox-grid">
+                                        {treatments?.map(treatment => (
+                                            <button
+                                                key={treatment.key}
+                                                type="button"
+                                                className={`checkbox-btn ${editForm.treatments?.includes(treatment.key) ? 'active' : ''}`}
+                                                onClick={() => toggleArrayItem('treatments', treatment.key)}
+                                            >
+                                                {treatment.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {(editForm.type === 'treatment' || event.effectiveness) && (
+                                <div className="form-group">
+                                    <label>Did it work?</label>
+                                    <div className="quick-buttons">
+                                        <button
+                                            type="button"
+                                            className={`quick-btn ${editForm.effectiveness === 'yes' ? 'active' : ''}`}
+                                            onClick={() => setEditForm(prev => ({ ...prev, effectiveness: 'yes' }))}
+                                        >
+                                            <span className="emoji">✅</span>
+                                            <span>Yes</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className={`quick-btn ${editForm.effectiveness === 'no' ? 'active' : ''}`}
+                                            onClick={() => setEditForm(prev => ({ ...prev, effectiveness: 'no' }))}
+                                        >
+                                            <span className="emoji">❌</span>
+                                            <span>No</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className={`quick-btn ${editForm.effectiveness === 'unsure' ? 'active' : ''}`}
+                                            onClick={() => setEditForm(prev => ({ ...prev, effectiveness: 'unsure' }))}
+                                        >
+                                            <span className="emoji">🤷</span>
+                                            <span>Unsure</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="form-group">
+                                <label>Details</label>
+                                <textarea
+                                    value={editForm.details || ''}
+                                    onChange={(e) => handleEditChange('details', e.target.value)}
+                                    className="form-textarea"
+                                    rows="2"
+                                />
+                            </div>
+
                             <div className="edit-actions">
                                 <button
                                     type="button"
@@ -250,17 +301,17 @@ export const EventList = ({
                                 <div className="action-buttons-right">
                                     <button
                                         type="button"
-                                        onClick={saveEdit}
-                                        className="save-btn"
-                                    >
-                                        ✓ Save
-                                    </button>
-                                    <button
-                                        type="button"
                                         onClick={cancelEditing}
                                         className="cancel-btn"
                                     >
                                         ✕ Cancel
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={saveEdit}
+                                        className="save-btn"
+                                    >
+                                        ✓ Save
                                     </button>
                                 </div>
                             </div>
@@ -326,6 +377,20 @@ export const EventList = ({
                             {event.supplements.map(supplement =>
                                 supplements.find(s => s.key === supplement)?.label || supplement
                             ).join(', ')}
+                        </div>
+                    )}
+
+                    {event.treatments?.length > 0 && (
+                        <div className="event-treatments">
+                            <strong>Treatments:</strong> {event.treatments.map(treatment =>
+                                treatments?.find(t => t.key === treatment)?.label || treatment
+                            ).join(', ')}
+                        </div>
+                    )}
+
+                    {event.effectiveness && (
+                        <div className="event-effectiveness">
+                            <strong>Did it work?</strong> {event.effectiveness}
                         </div>
                     )}
                 </div>

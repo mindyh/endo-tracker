@@ -7,10 +7,17 @@ export const useEventTypeConfig = (defaultEventTypes) => {
       try {
         const parsed = JSON.parse(saved);
         // Validate that saved event types still exist in defaultEventTypes
-        const validEventTypes = parsed.filter(savedType => 
+        const validEventTypes = parsed.filter(savedType =>
           defaultEventTypes.some(defaultType => defaultType.key === savedType.key)
         );
-        return validEventTypes.length > 0 ? validEventTypes : defaultEventTypes;
+
+        // Add any new event types that weren't in the saved list
+        const newEventTypes = defaultEventTypes.filter(defaultType =>
+          !parsed.some(savedType => savedType.key === defaultType.key)
+        );
+
+        const mergedEventTypes = [...validEventTypes, ...newEventTypes];
+        return mergedEventTypes.length > 0 ? mergedEventTypes : defaultEventTypes;
       } catch (e) {
         console.warn('Failed to parse saved event types, using defaults');
         return defaultEventTypes;

@@ -39,6 +39,21 @@ export const commonSupplements = [
   { key: 'pycnogenol', label: 'Pycnogenol' },
 ];
 
+export const commonTreatments = [
+  { key: 'cupping', label: 'Cupping' },
+  { key: 'stretching', label: 'Stretching' },
+  { key: 'acetaminophen', label: 'Acetaminophen' },
+  { key: 'ibuprofen', label: 'Ibuprofen' },
+  { key: 'acupuncture', label: 'Acupuncture' },
+  { key: 'hot-pack', label: 'Hot Pack' },
+];
+
+export const treatmentEffectiveness = [
+  { key: 'yes', label: 'Yes' },
+  { key: 'no', label: 'No' },
+  { key: 'unsure', label: 'Unsure' },
+];
+
 export const painLevels = [
   { value: 1, label: '1 - Minimal', color: '#22c55e' },
   { value: 2, label: '2 - Mild', color: '#84cc16' },

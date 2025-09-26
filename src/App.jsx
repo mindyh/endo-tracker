@@ -10,7 +10,7 @@ import { EventForm } from './components/EventForm';
 import { SettingsPanel } from './components/SettingsPanel';
 import { RecentEvents } from './components/RecentEvents';
 import { History } from './components/History';
-import { eventTypes, painLocations, commonAllergens, commonSupplements, painLevels } from './data/constants';
+import { eventTypes, painLocations, commonAllergens, commonSupplements, commonTreatments, treatmentEffectiveness, painLevels } from './data/constants';
 import { formatTime } from './utils/timeUtils';
 
 // Constants moved to ./data/constants.js
@@ -25,6 +25,7 @@ function App() {
   const painLocationManager = useItemManager(painLocations, 'painLocations');
   const allergenManager = useItemManager(commonAllergens, 'allergens');
   const supplementManager = useItemManager(commonSupplements, 'supplements');
+  const treatmentManager = useItemManager(commonTreatments, 'treatments');
   const { activeEventTypes, setActiveEventTypes } = useEventTypeConfig(eventTypes);
 
   // Event handlers
@@ -34,12 +35,6 @@ function App() {
     // Validate that an event type is selected
     if (!form.type) {
       alert('Please select an event type before logging.');
-      return;
-    }
-
-    // Additional validation for specific event types
-    if (form.type === 'pain-start' && !form.painLevel) {
-      alert('Please select a pain level for pain start events.');
       return;
     }
 
@@ -92,13 +87,17 @@ function App() {
               painLocations={painLocationManager.items}
               allergens={allergenManager.items}
               supplements={supplementManager.items}
+              treatments={treatmentManager.items}
+              treatmentEffectiveness={treatmentEffectiveness}
               onSubmit={handleSubmit}
+              timezone={timezone}
             />
             <RecentEvents
               events={events}
               painLocations={painLocationManager.items}
               allergens={allergenManager.items}
               supplements={supplementManager.items}
+              treatments={treatmentManager.items}
               timezone={timezone}
               updateEvent={updateEvent}
               deleteEvent={deleteEvent}
@@ -113,6 +112,7 @@ function App() {
             painLocations={painLocationManager.items}
             allergens={allergenManager.items}
             supplements={supplementManager.items}
+            treatments={treatmentManager.items}
             timezone={timezone}
             updateEvent={updateEvent}
             deleteEvent={deleteEvent}
@@ -125,9 +125,11 @@ function App() {
             allergenManager={allergenManager}
             painLocationManager={painLocationManager}
             supplementManager={supplementManager}
+            treatmentManager={treatmentManager}
             defaultAllergens={commonAllergens}
             defaultPainLocations={painLocations}
             defaultSupplements={commonSupplements}
+            defaultTreatments={commonTreatments}
             allEventTypes={eventTypes}
             activeEventTypes={activeEventTypes}
             setActiveEventTypes={setActiveEventTypes}

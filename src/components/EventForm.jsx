@@ -9,6 +9,8 @@ export const EventForm = ({
   painLocations,
   allergens,
   supplements,
+  treatments,
+  treatmentEffectiveness,
   onSubmit,
   timezone
 }) => (
@@ -111,6 +113,56 @@ export const EventForm = ({
         </div>
       )}
 
+      {form.type === 'treatment' && (
+        <>
+          <div className="form-group">
+            <label>Treatment(s)</label>
+            <div className="supplement-selection">
+              {treatments?.map((treatment) => (
+                <button
+                  key={treatment.key}
+                  type="button"
+                  className={`supplement-btn ${form.treatments.includes(treatment.key) ? 'active' : ''}`}
+                  onClick={() => toggleArrayItem('treatments', treatment.key)}
+                >
+                  {treatment.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Did it work?</label>
+            <div className="quick-buttons">
+              <button
+                type="button"
+                className={`quick-btn ${form.effectiveness === 'yes' ? 'active' : ''}`}
+                onClick={() => handleChange({ target: { name: 'effectiveness', value: 'yes' } })}
+              >
+                <span className="emoji">✅</span>
+                <span>Yes</span>
+              </button>
+              <button
+                type="button"
+                className={`quick-btn ${form.effectiveness === 'no' ? 'active' : ''}`}
+                onClick={() => handleChange({ target: { name: 'effectiveness', value: 'no' } })}
+              >
+                <span className="emoji">❌</span>
+                <span>No</span>
+              </button>
+              <button
+                type="button"
+                className={`quick-btn ${form.effectiveness === 'unsure' ? 'active' : ''}`}
+                onClick={() => handleChange({ target: { name: 'effectiveness', value: 'unsure' } })}
+              >
+                <span className="emoji">🤷</span>
+                <span>Unsure</span>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
       <div className="form-group">
         <label>Details (optional)</label>
         <textarea
@@ -146,7 +198,11 @@ export const EventForm = ({
       <button
         type="submit"
         className="submit-btn"
-        disabled={!form.type}
+        disabled={
+          !form.type ||
+          (form.type === 'pain-start' && !form.painLevel) ||
+          (form.type === 'treatment' && (!form.treatments || form.treatments.length === 0))
+        }
       >
         📝 Log Event
       </button>

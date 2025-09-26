@@ -9,6 +9,8 @@ export const useFormState = (timezone) => {
     painLocations: [],
     allergens: [],
     supplements: [],
+    treatments: [],
+    effectiveness: '',
     timestamp: nowDateTimeLocalInTimeZone(timezone),
   });
 
@@ -38,6 +40,8 @@ export const useFormState = (timezone) => {
       painLocations: [],
       allergens: [],
       supplements: [],
+      treatments: [],
+      effectiveness: '',
       timestamp: nowDateTimeLocalInTimeZone(timezone),
     });
   };

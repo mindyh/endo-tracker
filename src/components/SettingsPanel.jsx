@@ -6,9 +6,11 @@ export const SettingsPanel = ({
   allergenManager,
   painLocationManager,
   supplementManager,
+  treatmentManager,
   defaultAllergens,
   defaultPainLocations,
   defaultSupplements,
+  defaultTreatments,
   allEventTypes,
   activeEventTypes,
   setActiveEventTypes,
@@ -77,6 +79,13 @@ export const SettingsPanel = ({
           manager={supplementManager}
           defaultItems={defaultSupplements}
           placeholder="Add new supplement..."
+        />
+
+        <ItemManager
+          title="Treatments"
+          manager={treatmentManager}
+          defaultItems={defaultTreatments}
+          placeholder="Add new treatment..."
         />
       </div>
     </div>
