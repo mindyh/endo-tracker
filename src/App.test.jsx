@@ -40,12 +40,12 @@ describe('App Component', () => {
   test('switches between tabs', async () => {
     const user = userEvent.setup();
     render(<App />);
-    
+
     // Click History tab
     const historyTab = screen.getByText('History');
     await user.click(historyTab);
     expect(screen.getByText('Event History')).toBeDefined();
-    
+
     // Click Settings tab
     const settingsTab = screen.getByText('Settings');
     await user.click(settingsTab);
@@ -55,15 +55,15 @@ describe('App Component', () => {
   test('allows logging a basic event', async () => {
     const user = userEvent.setup();
     render(<App />);
-    
+
     // Select pain event
     const painButton = screen.getByText('🩸 Period Started');
     await user.click(painButton);
-    
+
     // Submit the event
     const submitButton = screen.getByText('Log Event');
     await user.click(submitButton);
-    
+
     // Check that localStorage was called
     expect(localStorageMock.setItem).toHaveBeenCalledWith('endoEvents', expect.any(String));
   });

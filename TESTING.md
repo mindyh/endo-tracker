@@ -64,7 +64,7 @@ npx vitest --run --reporter=verbose TabNavigation
 - ✅ EventList - Event display and editing
 - ✅ App - Main application logic
 
-#### Custom Hooks  
+#### Custom Hooks
 - ✅ useFormState - Form state management
 - ✅ useItemManager - Item CRUD operations
 
@@ -101,19 +101,19 @@ The test environment includes mocks for:
 test('allows logging a pain event with details', async () => {
   const user = userEvent.setup();
   render(<App />);
-  
+
   // Select pain event type
   const painButton = screen.getByText('🩸 Pain Started');
   await user.click(painButton);
-  
+
   // Fill in details
   const detailsInput = screen.getByPlaceholderText('Additional details...');
   await user.type(detailsInput, 'Sharp lower back pain');
-  
+
   // Submit
   const submitButton = screen.getByText('Log Event');
   await user.click(submitButton);
-  
+
   // Verify event appears
   expect(screen.getByText('Sharp lower back pain')).toBeDefined();
 });
